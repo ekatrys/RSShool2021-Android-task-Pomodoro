@@ -57,10 +57,10 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     override fun onStop() {
         super.onStop()
-        val k = viewModel.timeToEndLastStartedTimer()
-        val p = viewModel.timeToEndLastStartedTimer()
-        viewModel.timeToEndLastStartedTimer()
-        val lastStartedTimer = viewModel.getLastStartedTimer
+        val k = viewModel.getLastStartedTimer.value
+        val p = viewModel.getLastStartedTimer
+
+        val lastStartedTimer = viewModel.getLastStartedTimer.value
 
         val startIntent = Intent(this, ForegroundService::class.java)
         startIntent.putExtra(COMMAND_ID, COMMAND_START)

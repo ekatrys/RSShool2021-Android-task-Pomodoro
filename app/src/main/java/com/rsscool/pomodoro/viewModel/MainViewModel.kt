@@ -1,5 +1,6 @@
 package com.rsscool.pomodoro.viewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +21,7 @@ class MainViewModel(val database: TimerDatabaseDao) : ViewModel(),
     TimerListener {
     val timers = database.getAllTimers()
     var timeInterval = MutableLiveData<Long?>()
-    var getLastStartedTimer: Timer? = null
+    var getLastStartedTimer = timeToEndLastStartedTimer()
 
     fun addTimer() {
         viewModelScope.launch {
@@ -34,10 +35,13 @@ class MainViewModel(val database: TimerDatabaseDao) : ViewModel(),
         }
     }
 
-    fun timeToEndLastStartedTimer() =
+    private fun timeToEndLastStartedTimer(): LiveData<Timer?> {
+        var result = MutableLiveData<Timer?>()
         viewModelScope.launch {
-            getLastStartedTimer = getLastStartedTimer()
+            result.value = getLastStartedTimer()
         }
+        return result
+    }
 
     override fun start(id: Long) {
         viewModelScope.launch {
